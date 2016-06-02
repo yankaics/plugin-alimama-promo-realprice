@@ -1,0 +1,24 @@
+{
+    "name": "淘客到手价",
+    "manifest_version": 2,
+    "version": "1.0.0.1",
+    "homepage_url": "http://www.holyhi.net/",
+    "description": "淘宝客到手价显示。",
+    "permissions": ["cookies", "contextMenus", "tabs", "*://*/*"],
+    "icons": {
+        "48": "ext_logo48x48.png",
+        "128": "ext_logo128x128.png"
+    },
+    "background": {
+        "scripts": ["background.js"]
+    },
+    "browser_action": {
+        "default_icon": "ext_logo48x48.png",
+        "default_title": "到手价-淘宝客到手价显示",
+        "default_popup": "popup.html"
+    },
+    "content_scripts": [{
+        "matches": ["*://pub.alimama.com/*"],
+        "js": ["jquery-1.11.2.min.js", "contentscript.js"]
+    }]
+}
