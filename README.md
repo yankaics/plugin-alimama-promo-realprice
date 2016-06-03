@@ -1,2 +1,4 @@
-# plugin-alimama-promo-realprice
-阿里妈妈-淘宝客-到手价显示插件
+# 淘宝联盟推广到手价显示插件
+
+实用小插件, 看心情更新.
+有bug发issue, 有时间就修.
