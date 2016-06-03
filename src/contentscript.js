@@ -1,31 +1,34 @@
 $(function() {
-    function parsePrices(lines) {
-        var results = [], match;
-        $(lines).find(".number .yuan").each(function() {
+    var shareRatio = 0.95,
+        techServFee = 0.1;
+    function parsePrices(contentLines) {
+        var values = [], match;
+        $(contentLines).find(".number .yuan").each(function() {
             match = $(this).parent().text().match(/￥([\d,]+\.\d{2})/);
             if (match.length > 1) {
-                results.push(match[1].replace(",", ""));
+                values.push(match[1].replace(",", ""));
             }
         });
-        return results;
+        return values.length != 2 ? [0,0] : values;
     }
     function process(el) {
         var list = $(el).find(".box-content");
         if (list.size() > 0) {
             $(list).each(function() {
-                var lines = $(this).children(".content-line"),
-                    results = parsePrices(lines),
+                var contentLines = $(this).children(".content-line"),
+                    results = parsePrices(contentLines),
                     price = parseFloat(results[0]),
-                    commission = parseFloat(results[1]),
-                    resultValue = String(Math.round((price - (commission * 0.95)) * 100, 2)),
-                    resultLine = $('<div class="content-line btn-brand"></div>');
-                $(resultLine).html('<b>到手价</b>：￥<span class="number number-24">'
-                        + '<span class="integer">' + resultValue.substr(0, resultValue.length-2) + '</span>'
+                    commission = parseFloat(results[1]) * shareRatio,
+                    value = String(Math.round((price - commission + (commission * techServFee)) * 100, 2)),
+                    integerValue = value.substr(0, value.length-2),
+                    decimalValue = value.substr(value.length-2, 2),
+                    elem = $('<div class="content-line btn-brand"></div>');
+                $(elem).html('<b>到手价</b>：￥<span class="number number-24">'
+                        + '<span class="integer">' + (integerValue.length > 0 ? integerValue : '0') + '</span>'
                         + '<span class="pointer">.</span>'
-                        + '<span class="decimal">' + resultValue.substr(resultValue.length-2, 2) + '</span></span>');
-                console.info();
-                $(resultLine).insertBefore($(lines).eq(1));
-                $(lines).last().remove();
+                        + '<span class="decimal">' + decimalValue + '</span></span>');
+                $(elem).insertBefore($(contentLines).eq(1));
+                $(contentLines).last().remove();
             });
             $(el).addClass("hack-price");
         }
@@ -35,5 +38,5 @@ $(function() {
         if (!$(el).hasClass("hack-price")) {
             process(el);
         }
-    }, 100);
+    }, 500);
 });

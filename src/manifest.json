@@ -1,7 +1,8 @@
 {
-    "name": "淘客到手价",
     "manifest_version": 2,
-    "version": "1.0.0.1",
+    "version": "1.0.0.2",
+    "name": "淘客到手价",
+    "default_locate": "zh",
     "homepage_url": "http://www.holyhi.net/",
     "description": "淘宝客到手价显示。",
     "permissions": ["cookies", "contextMenus", "tabs", "*://*/*"],
@@ -18,7 +19,7 @@
         "default_popup": "popup.html"
     },
     "content_scripts": [{
-        "matches": ["*://pub.alimama.com/*"],
+        "matches": ["*://pub.alimama.com/promo/*"],
         "js": ["jquery-1.11.2.min.js", "contentscript.js"]
     }]
 }
